@@ -3,164 +3,409 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jogging Trails in Singapore - Filtered by Distance & Difficulty</title>
+    <title>Letsgojogging!</title>
     <style>
+        /* General Page Styles */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            background-color: #deefee;
             margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-        header {
-            background-color: #004d40;
-            color: white;
-            text-align: center;
-            padding: 1rem;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
             padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
+
+        h1 {
+            color: #4b8c84;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            color: #3aa993;
+            margin-top: 20px;
+        }
+
+        p {
+            text-align: center;
+            max-width: 800px;
+            color: #2f8a73;
+        }
+
+        /* Search Bar */
+        .search-bar {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .search-bar input {
+            padding: 10px;
+            width: 80%;
+            max-width: 400px;
+            font-size: 1em;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-right: 10px;
+            box-sizing: border-box;
+        }
+
+        /* Filters Section */
         .filters {
             display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-        .filters select, .filters button {
-            padding: 10px;
-            font-size: 1rem;
-            margin: 5px;
-        }
-        .trail-list {
-            display: flex;
             flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .filters label {
+            margin-right: 10px;
+            font-size: 1.1em;
+            color: #34495e;
+            border-radius: 5px;
+        }
+
+        .filters select {
+            padding: 10px;
+            margin: 10px 10px;
+            font-size: 1em;
+            width: 180px;
+            max-width: 100%;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        /* Grid Layout for Trail Cards */
+        .trail-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 20px;
-        }
-        .trail {
-            background-color: white;
-            padding: 15px;
-            width: 30%;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            display: none;
-        }
-        .trail h2 {
-            color: #004d40;
-        }
-        .trail img {
+            padding: 20px;
             width: 100%;
+            max-width: 1200px;
+        }
+
+        .trail-card {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            text-align: center;
+            padding: 15px;
+            transition: transform 0.3s;
+        }
+
+        .trail-card:hover {
+            transform: scale(1.05);
+        }
+
+        .trail-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
             border-radius: 8px;
         }
-        .trail p {
-            font-size: 1.1rem;
+
+        .trail-card h3 {
+            margin-top: 10px;
+            color: #2980b9;
         }
-        .map-container {
-            text-align: center;
+
+        .trail-card p {
+            color: #7f8c8d;
+        }
+
+        .trail-card .details {
+            font-size: 0.9em;
+            color: #34495e;
             margin-top: 10px;
         }
-        iframe {
-            width: 100%;
-            height: 250px;
-            border: none;
-            border-radius: 8px;
+
+        .trail-card .animals {
+            font-size: 0.9em;
+            color: #16a085;
+            margin-top: 10px;
         }
+
+        /* Media Queries for Mobile Devices */
+        @media (max-width: 768px) {
+            .filters {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .filters select {
+                width: 100%;
+                max-width: 400px;
+            }
+
+            .trail-list {
+                grid-template-columns: 1fr; /* Single column layout on small screens */
+            }
+        }
+
     </style>
 </head>
 <body>
 
-<header>
-    <h1>Jogging Trails in Singapore</h1>
-    <p>Filter trails based on distance and difficulty.</p>
-</header>
+    <h1><p align=centre>Letsgojogging! <br>#searchforendorphins</h1></body>
+    Explore an alternative jogging route with a friend this weekend!</p>
 
-<div class="container">
+    <!-- Search Bar Section -->
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search for a trail..." oninput="searchTrails()">
+    </div>
+
+    <!-- Filters Section -->
     <div class="filters">
-        <!-- Distance Filter -->
-        <div>
-            <label for="distance">Select Distance:</label>
-            <select id="distance" name="distance">
-                <option value="all">All</option>
-                <option value="short">Short (under 5km)</option>
-                <option value="medium">Medium (5-10km)</option>
-                <option value="long">Long (over 10km)</option>
-            </select>
-        </div>
+        <label for="distance">Select Distance:</label>
+        <select id="distance">
+            <option value="">All</option>
+            <option value="short">Short (Under 5km)</option>
+            <option value="medium">Medium (5-10km)</option>
+            <option value="long">Long (Over 10km)</option>
+        </select>
 
-        <!-- Difficulty Filter -->
-        <div>
-            <label for="difficulty">Select Difficulty:</label>
-            <select id="difficulty" name="difficulty">
-                <option value="all">All</option>
-                <option value="easy">Easy</option>
-                <option value="moderate">Moderate</option>
-                <option value="hard">Hard</option>
-            </select>
-        </div>
+        <label for="terrain">Select Terrain:</label>
+        <select id="terrain">
+            <option value="">All</option>
+            <option value="paved">Paved</option>
+            <option value="nature">Nature</option>
+            <option value="hilly">Hilly</option>
+        </select>
 
-        <!-- Filter Button -->
-        <button onclick="filterTrails()">Filter Trails</button>
+        <label for="shelter">Amount of Shelter:</label>
+        <select id="shelter">
+            <option value="">All</option>
+            <option value="high">High</option>
+            <option value="moderate">Moderate</option>
+            <option value="low">Low</option>
+        </select>
+
     </div>
 
-    <div class="trail-list">
-        <!-- Trail 1 -->
-        <div class="trail" data-distance="medium" data-difficulty="moderate">
-            <h2>East Coast Park</h2>
-            <img src="https://example.com/east_coast_park.jpg" alt="East Coast Park">
-            <p>Enjoy a scenic 15km run along the coastline of Singapore. Suitable for moderate difficulty joggers.</p>
-            <div class="map-container">
-                <iframe src="https://www.google.com/maps/embed?pb=..." allowfullscreen="" loading="lazy"></iframe>
+        <div class="trail-list" id="trailList">
+        <!-- Trail Cards -->
+        <div class="trail-card" data-distance="short" data-terrain="paved" data-shelter="low">
+            <img src="ECP.jpg" alt="East Coast Park">
+            <h3>East Coast Park</h3>
+            <p>Leisurely run along the coastline with easy access and beautiful views.</p>
+            <div class="details">
+                <strong>Distance:</strong> 3.8 km (one way)<br>
+                <strong>Terrain:</strong> Paved, coastal<br>
+                <strong>Difficulty:</strong> Easy
+            </div>
+            <div class="animals">
+                <strong>Common Animals:</strong> Monitor Lizard, Crab-eating Macaque, Butterflies
             </div>
         </div>
 
-        <!-- Trail 2 -->
-        <div class="trail" data-distance="short" data-difficulty="easy">
-            <h2>Singapore Botanic Gardens</h2>
-            <img src="https://example.com/botanic_gardens.jpg" alt="Singapore Botanic Gardens">
-            <p>The Botanic Gardens offer a peaceful 3km jogging loop. A great option for beginner joggers.</p>
-            <div class="map-container">
-                <iframe src="https://www.google.com/maps/embed?pb=..." allowfullscreen="" loading="lazy"></iframe>
+        <div class="trail-card" data-distance="medium" data-terrain="nature" data-shelter="moderate">
+            <img src="macritchie.jpg" alt="MacRitchie Reservoir">
+            <h3>MacRitchie Reservoir</h3>
+            <p>Run along the scenic reservoir, surrounded by nature with plenty of wildlife.</p>
+            <div class="details">
+                <strong>Distance:</strong> 8 km (loop)<br>
+                <strong>Terrain:</strong> Gravel, nature trails<br>
+                <strong>Difficulty:</strong> Moderate
+            </div>
+            <div class="animals">
+                <strong>Common Animals:</strong> Long-tailed Macaque, Monitor Lizard, Butterflies
             </div>
         </div>
 
-        <!-- Trail 3 -->
-        <div class="trail" data-distance="long" data-difficulty="hard">
-            <h2>MacRitchie Reservoir</h2>
-            <img src="https://example.com/macritchie_reservoir.jpg" alt="MacRitchie Reservoir">
-            <p>A 10km loop with challenging terrain, perfect for experienced joggers who want to test their endurance.</p>
-            <div class="map-container">
-                <iframe src="https://www.google.com/maps/embed?pb=..." allowfullscreen="" loading="lazy"></iframe>
+        <div class="trail-card" data-distance="long" data-terrain="hilly" data-shelter="moderate">
+            <img src="Bukit-Timah-Nature-Reserve-in-Singapore.jpg" alt="Bukit Timah Nature Reserve">
+            <h3>Bukit Timah Nature Reserve</h3>
+            <p>For a more challenging run, explore Singapore's highest peak with lots of natural beauty and wildlife.</p>
+            <div class="details">
+                <strong>Distance:</strong> 11 km (loop)<br>
+                <strong>Terrain:</strong> Hilly, nature trails<br>
+                <strong>Difficulty:</strong> Hard
+            </div>
+            <div class="animals">
+                <strong>Common Animals:</strong> Long-tailed Macaque, Common Palm Civet, Kingfisher
             </div>
         </div>
 
-        <!-- More Trails can go here -->
+        <div class="trail-card" data-distance="medium" data-terrain="paved" data-shelter="low">
+            <img src="MBS.jpg" alt="Marina Bay & Gardens by the Bay">
+            <h3>Marina Bay & Gardens by the Bay</h3>
+            <p>Supertrees! Take a scenic jog along Singapore's skyline.</p>
+            <div class="details">
+                <strong>Distance:</strong> 5-8 km (loop)<br>
+                <strong>Terrain:</strong> Paved, smooth, flat<br>
+                <strong>Difficulty:</strong> Easy
+            </div>
+            <div class="animals">
+                <strong>Common Animals:</strong> Kingfisher, Herons, Monkeys, Butterflies
+            </div></div>
+
+            <div class="trail-card" data-distance="long" data-terrain="paved" data-shelter="moderate">
+                <img src="Southern.jpg" alt="Southern Ridges">
+                <h3>Southern Ridges</h3>
+                <p>Mix of forest pathways and scenic viewpoints. Occasional steep inclines, you'll get a workout.</p>
+                <div class="details">
+                    <strong>Distance:</strong> 10km<br>
+                    <strong>Terrain:</strong> Paved, hilly, varied terrain<br>
+                    <strong>Difficulty:</strong> Moderate
+                </div>
+                <div class="animals">
+                    <strong>Common Animals:</strong> Squirrels, Monkeys, Yellow-vented bulbul, Asian koels
+                </div>
+        </div>
+
+        <div class="trail-card" data-distance="medium" data-terrain="paved" data-shelter="low">
+            <img src="river.jpg" alt="Singapore River / Clarke Quay">
+            <h3>Singapore River / Clarke Quay</h3>
+            <p>Urban feels, along the river and through the city.</p>
+            <div class="details">
+                <strong>Distance:</strong> 5-6km<br>
+                <strong>Terrain:</strong> Paved, urban, flat<br>
+                <strong>Difficulty:</strong> Moderate
+            </div>
+            <div class="animals">
+                <strong>Common Animals:</strong> Occasional herons along the river banks!
+            </div></div>
+
+
+            <div class="trail-card" data-distance="medium" data-terrain="paved" data-shelter="low">
+                <img src="sentosa.jpg" alt="Sentosa Island">
+                <h3>Sentosa Island</h3>
+                <p>Beachfront chills.</p>
+                <div class="details">
+                    <strong>Distance:</strong> 5-6km<br>
+                    <strong>Terrain:</strong> Paved, beachfront, slight inclines<br>
+                    <strong>Difficulty:</strong> Moderate
+                </div>
+                <div class="animals">
+                    <strong>Common Animals:</strong>Monkeys, Coastal birds, Occasional turtles by the shoreline
+                </div></div>
+
+                <div class="trail-card" data-distance="medium" data-terrain="paved" data-shelter="moderate">
+                    <img src="west coast park.jpg" alt="West Coast Park">
+                    <h3>West Coast Park</h3>
+                    <p>Good shaded spots for a respite when you need to!</p>
+                    <div class="details">
+                        <strong>Distance:</strong> 5km<br>
+                        <strong>Terrain:</strong> Paved, gravel paths<br>
+                        <strong>Difficulty:</strong> Easy
+                    </div>
+                    <div class="animals">
+                        <strong>Common Animals:</strong>Kingfishers, Herons, Mangrove Crabs, Monitor Lizards
+                    </div></div>
+    
+                    <div class="trail-card" data-distance="medium" data-terrain="paved" data-shelter="moderate">
+                        <img src="punggol.jpg" alt="Punggol Waterway Park">
+                        <h3>Punggol Waterway Park</h3>
+                        <p>Family-friendly, ideal for a lesiurely jog. Great waterfront views and green spaces.</p>
+                        <div class="details">
+                            <strong>Distance:</strong> 5-7km<br>
+                            <strong>Terrain:</strong> Paved, flat<br>
+                            <strong>Difficulty:</strong> Moderate
+                        </div>
+                        <div class="animals">
+                            <strong>Common Animals:</strong> Otters, Monitor Lizards, Egrets, Kingfishers
+                        </div></div>
+        
+                        <div class="trail-card" data-distance="short" data-terrain="paved" data-shelter="moderate">
+                            <img src="SBG.jpg" alt="Singapore Botanic Gardens">
+                            <h3>Singapore Botanic Gardens (Heritage Trail)</h3>
+                            <p>Mix of lush greenery, heritage features and a serene atmosphere.</p>
+                            <div class="details">
+                                <strong>Distance:</strong> 3km<br>
+                                <strong>Terrain:</strong> Paved, flat<br>
+                                <strong>Difficulty:</strong> Easy
+                            </div>
+                            <div class="animals">
+                                <strong>Common Animals:</strong> Sunbirds, Swallows, Yellow-vented bulbuls, Squirrels, Monitor Lizards
+                            </div></div>
+
+                            <div class="trail-card" data-distance="short" data-terrain="nature" data-shelter="moderate">
+                                <img src="bishan-ang-mo-kio-park-5.jpg" alt="Bishan-Ang Mo Kio Park">
+                                <h3>Bishan-Ang Mo Kio Park</h3>
+                                <p>Mix of lush greenery, heritage features and a serene atmosphere.</p>
+                                <div class="details">
+                                    <strong>Distance:</strong> 3-4km<br>
+                                    <strong>Terrain:</strong> Paved, flat<br>
+                                    <strong>Difficulty:</strong> Easy
+                                </div>
+                                <div class="animals">
+                                    <strong>Common Animals:</strong> Otters, Herons, Egrets, Kingfishers, Squirrels, Monitor Lizards
+                                </div></div>
+
+                                <div class="trail-card" data-distance="short" data-terrain="paved" data-shelter="moderate">
+                                    <img src="Greenway-South-Entry-Bidadari-Park-Singapore.jpg" alt="Bidadari Park">
+                                    <h3>Bidadari Park</h3>
+                                    <p>Good mix of urban and nature. Some boardwalks and gravel paths!</p>
+                                    <div class="details">
+                                        <strong>Distance:</strong> 2-3km<br>
+                                        <strong>Terrain:</strong> Paved, flat<br>
+                                        <strong>Difficulty:</strong> Easy
+                                    </div>
+                                    <div class="animals">
+                                        <strong>Common Animals:</strong> Oriental-pied hornbills, Whiskered tern, Yellow-vented bulbuls
+                                    </div></div>
     </div>
-</div>
 
-<script>
-    // Function to filter trails based on user selection
-    function filterTrails() {
-        const distanceFilter = document.getElementById('distance').value;
-        const difficultyFilter = document.getElementById('difficulty').value;
-        const trails = document.querySelectorAll('.trail');
+    <script>
+        // Get filter and search input elements
+        const distanceFilter = document.getElementById('distance');
+        const terrainFilter = document.getElementById('terrain');
+        const shelterFilter = document.getElementById('shelter');
+        const searchInput = document.getElementById('searchInput');
+        const trailList = document.getElementById('trailList');
+        
+        // Function to filter trails based on selected criteria
+        function filterTrails() {
+            const selectedDistance = distanceFilter.value.toLowerCase();
+            const selectedTerrain = terrainFilter.value.toLowerCase();
+            const selectedShelter = shelterFilter.value.toLowerCase();
 
-        trails.forEach(trail => {
-            const trailDistance = trail.getAttribute('data-distance');
-            const trailDifficulty = trail.getAttribute('data-difficulty');
+            // Loop through each trail card and apply filters
+            const trails = trailList.getElementsByClassName('trail-card');
+            for (let trail of trails) {
+                const trailDistance = trail.getAttribute('data-distance').toLowerCase();
+                const trailShelter = trail.getAttribute('data-shelter').toLowerCase();
+                const trailTerrain = trail.getAttribute('data-terrain').toLowerCase().split(' ');
+            
 
-            // Show trail if it matches both filters, otherwise hide it
-            if ((distanceFilter === 'all' || trailDistance === distanceFilter) && 
-                (difficultyFilter === 'all' || trailDifficulty === difficultyFilter)) {
-                trail.style.display = 'block';
-            } else {
-                trail.style.display = 'none';
+                let isVisible = true;
+
+                // Check if trail matches all selected filters
+                if (selectedDistance && trailDistance !== selectedDistance) isVisible = false;
+                if (selectedTerrain && trailTerrain !== selectedTerrain) isVisible = false;
+                if (selectedShelter && trailShelter !== selectedShelter) isVisible = false;
+
+                // Display or hide the trail card based on visibility
+                trail.style.display = isVisible ? 'block' : 'none';
             }
-        });
-    }
+        }
 
-    // Initialize the page by showing all trails on load
-    window.onload = filterTrails;
-</script>
+        // Function to search trails by name
+        function searchTrails() {
+            const searchQuery = searchInput.value.toLowerCase();
+            const trails = trailList.getElementsByClassName('trail-card');
+            
+            for (let trail of trails) {
+                const trailName = trail.getElementsByTagName('h3')[0].textContent.toLowerCase();
+                const isVisible = trailName.includes(searchQuery);
+                trail.style.display = isVisible ? 'block' : 'none';
+            }
+
+            // Call filterTrails to also apply any active filters after search
+            filterTrails();
+        }
+
+        // Attach event listeners to filters and search input
+        distanceFilter.addEventListener('change', filterTrails);
+        terrainFilter.addEventListener('change', filterTrails);
+        shelterFilter.addEventListener('change', filterTrails);
+
+    </script>
 
 </body>
 </html>
