@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogging Trails in Singapore - Filtered by Distance & Difficulty</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #004d40;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .filters {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .filters select, .filters button {
+            padding: 10px;
+            font-size: 1rem;
+            margin: 5px;
+        }
+        .trail-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .trail {
+            background-color: white;
+            padding: 15px;
+            width: 30%;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            display: none;
+        }
+        .trail h2 {
+            color: #004d40;
+        }
+        .trail img {
+            width: 100%;
+            border-radius: 8px;
+        }
+        .trail p {
+            font-size: 1.1rem;
+        }
+        .map-container {
+            text-align: center;
+            margin-top: 10px;
+        }
+        iframe {
+            width: 100%;
+            height: 250px;
+            border: none;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Jogging Trails in Singapore</h1>
+    <p>Filter trails based on distance and difficulty.</p>
+</header>
+
+<div class="container">
+    <div class="filters">
+        <!-- Distance Filter -->
+        <div>
+            <label for="distance">Select Distance:</label>
+            <select id="distance" name="distance">
+                <option value="all">All</option>
+                <option value="short">Short (under 5km)</option>
+                <option value="medium">Medium (5-10km)</option>
+                <option value="long">Long (over 10km)</option>
+            </select>
+        </div>
+
+        <!-- Difficulty Filter -->
+        <div>
+            <label for="difficulty">Select Difficulty:</label>
+            <select id="difficulty" name="difficulty">
+                <option value="all">All</option>
+                <option value="easy">Easy</option>
+                <option value="moderate">Moderate</option>
+                <option value="hard">Hard</option>
+            </select>
+        </div>
+
+        <!-- Filter Button -->
+        <button onclick="filterTrails()">Filter Trails</button>
+    </div>
+
+    <div class="trail-list">
+        <!-- Trail 1 -->
+        <div class="trail" data-distance="medium" data-difficulty="moderate">
+            <h2>East Coast Park</h2>
+            <img src="https://example.com/east_coast_park.jpg" alt="East Coast Park">
+            <p>Enjoy a scenic 15km run along the coastline of Singapore. Suitable for moderate difficulty joggers.</p>
+            <div class="map-container">
+                <iframe src="https://www.google.com/maps/embed?pb=..." allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </div>
+
+        <!-- Trail 2 -->
+        <div class="trail" data-distance="short" data-difficulty="easy">
+            <h2>Singapore Botanic Gardens</h2>
+            <img src="https://example.com/botanic_gardens.jpg" alt="Singapore Botanic Gardens">
+            <p>The Botanic Gardens offer a peaceful 3km jogging loop. A great option for beginner joggers.</p>
+            <div class="map-container">
+                <iframe src="https://www.google.com/maps/embed?pb=..." allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </div>
+
+        <!-- Trail 3 -->
+        <div class="trail" data-distance="long" data-difficulty="hard">
+            <h2>MacRitchie Reservoir</h2>
+            <img src="https://example.com/macritchie_reservoir.jpg" alt="MacRitchie Reservoir">
+            <p>A 10km loop with challenging terrain, perfect for experienced joggers who want to test their endurance.</p>
+            <div class="map-container">
+                <iframe src="https://www.google.com/maps/embed?pb=..." allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </div>
+
+        <!-- More Trails can go here -->
+    </div>
+</div>
+
+<script>
+    // Function to filter trails based on user selection
+    function filterTrails() {
+        const distanceFilter = document.getElementById('distance').value;
+        const difficultyFilter = document.getElementById('difficulty').value;
+        const trails = document.querySelectorAll('.trail');
+
+        trails.forEach(trail => {
+            const trailDistance = trail.getAttribute('data-distance');
+            const trailDifficulty = trail.getAttribute('data-difficulty');
+
+            // Show trail if it matches both filters, otherwise hide it
+            if ((distanceFilter === 'all' || trailDistance === distanceFilter) && 
+                (difficultyFilter === 'all' || trailDifficulty === difficultyFilter)) {
+                trail.style.display = 'block';
+            } else {
+                trail.style.display = 'none';
+            }
+        });
+    }
+
+    // Initialize the page by showing all trails on load
+    window.onload = filterTrails;
+</script>
+
+</body>
+</html>
