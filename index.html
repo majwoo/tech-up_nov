@@ -165,7 +165,7 @@
 <body>
 
     <h1><p align=centre>Littletrails!<br>#searchforendorphins</h1></body>
-    Explore an alternative jogging route with a friend this weekend!</p>
+    <p align=centre>Explore an alternative jogging route with a friend this weekend!</p></p>
 
     <!-- Search Bar Section -->
     <div class="search-bar">
@@ -192,7 +192,7 @@
             <option value="gravel">Gravel</option>
         </select>
 
-        <label for="shelter">Shelter from sun:</label>
+        <label for="shelter">Shelter From Sun:</label>
         <select id="shelter">
             <option value="">All</option>
             <option value="high">High</option>
@@ -217,7 +217,7 @@
                 <strong>Shelter:</strong> Low - Barely any
             </div>
             <div class="animals">
-                <strong>Common Animals:</strong> Monitor lizard, Crab-eating Macaque, Butterflies
+                <strong>Common Animals:</strong> Monitor lizards, Crab-eating Macaque, Butterflies
             </div>
             <div class="coffee">
                 <span>❤️</span><span>&#9749;:</span> <i>East Coast Commune</i>
@@ -235,7 +235,7 @@
                 <strong>Shelter:</strong> Moderate <span>🌳</span>
             </div>
             <div class="animals">
-                <strong>Common Animals:</strong> Long-tailed Macaque, Monitor lizard, Butterflies
+                <strong>Common Animals:</strong> Long-tailed Macaque, Monitor lizards, Butterflies
             </div>
 
             <div class="coffee">
@@ -531,55 +531,45 @@
         const shelterFilter = document.getElementById('shelter');
         const searchInput = document.getElementById('searchInput');
         const trailList = document.getElementById('trailList');
-        
-        // Function to filter trails based on selected criteria
+    
+        // Function to filter trails based on selected criteria and search input
         function filterTrails() {
             const selectedDistance = distanceFilter.value.toLowerCase();
             const selectedTerrain = terrainFilter.value.toLowerCase();
             const selectedShelter = shelterFilter.value.toLowerCase();
-
-            // Loop through each trail card and apply filters
+            const searchQuery = searchInput.value.toLowerCase();
+            
+            // Loop through each trail card and apply both search and filter criteria
             const trails = trailList.getElementsByClassName('trail-card');
             for (let trail of trails) {
                 const trailDistance = trail.getAttribute('data-distance').toLowerCase();
                 const trailShelter = trail.getAttribute('data-shelter').toLowerCase();
                 const trailTerrain = trail.getAttribute('data-terrain').toLowerCase();
-            
+                const trailName = trail.getElementsByTagName('h3')[0].textContent.toLowerCase();
+                const trailDescription = trail.getElementsByTagName('p')[0].textContent.toLowerCase();
+                const trailText = trailName + trailDescription;
+    
+                // Determine if the trail matches all selected filters and the search query
                 let isVisible = true;
-
-                // Check if trail matches all selected filters
+    
+                // Filter by distance, terrain, and shelter
                 if (selectedDistance && trailDistance !== selectedDistance) isVisible = false;
                 if (selectedTerrain && !trailTerrain.includes(selectedTerrain)) isVisible = false;
                 if (selectedShelter && trailShelter !== selectedShelter) isVisible = false;
-                
-                // Display or hide the trail card based on visibility
+    
+                // Search filter by trail name/description
+                if (searchQuery && !trailText.includes(searchQuery)) isVisible = false;
+    
+                // Show or hide the trail card based on visibility
                 trail.style.display = isVisible ? 'block' : 'none';
             }
-            
         }
-
-        // Function to search trails by name
-        function searchTrails() {
-            const searchQuery = searchInput.value.toLowerCase();
-            const trails = trailList.getElementsByClassName('trail-card');
-
-            for (let trail of trails) {
-                const trailName = trail.getElementsByTagName('h3')[0].textContent.toLowerCase();
-                const trailDescription = trail.getElementsByTagName('p')[0].textContent.toLowerCase();
-                const trailText = trailName + trailDescription
-                const isVisible = trailText.includes(searchQuery);
-                trail.style.display = isVisible ? 'block' : 'none';
-            }
-
-            // Call filterTrails to also apply any active filters after search
-           // filterTrails();
-        }
-
+    
         // Attach event listeners to filters and search input
         distanceFilter.addEventListener('change', filterTrails);
         terrainFilter.addEventListener('change', filterTrails);
         shelterFilter.addEventListener('change', filterTrails);
-
+        searchInput.addEventListener('input', filterTrails);  // Use 'input' instead of 'change' for live search updates
     </script>
 
 </body>
