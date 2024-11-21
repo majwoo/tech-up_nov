@@ -176,18 +176,29 @@
             margin-top: 10px;
         }
 
-        /* Media Queries for Mobile Devices */
-        @media (max-width: 768px) {
-            .filters {
-                flex-direction: column;
-                align-items: center;
-            }
 
-            .filters select {
-                width: 100%;
-                max-width: 400px;
-            }
+        /* Mobile responsiveness */
+@media (max-width: 768px) {
+    .filters {
+        flex-direction: column; /* Stack the filter elements vertically */
+        align-items: center; /* Center-align all the items */
+        padding: 15px; /* Optional: Add padding for mobile */
+    }
 
+    .filters label {
+        margin-right: 0; /* Remove margin-right on smaller screens */
+        margin-bottom: 8px; /* Ensure there is space between label and select */
+        font-size: 1em; /* Adjust font size for mobile */
+    }
+
+    .filters select {
+        width: 100%; /* Make the dropdowns fill the width of the screen */
+        max-width: 300px; /* Set a maximum width to avoid extremely wide selects */
+        margin-bottom: 15px; /* Add margin below the selects */
+    }
+
+
+     
             .trail-list {
                 grid-template-columns: 1fr; /* Single column layout on small screens */
             }
