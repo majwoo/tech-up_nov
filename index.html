@@ -53,6 +53,19 @@
             box-sizing: border-box;
         }
 
+        .search-bar button {
+            padding: 10px 25px;
+            font-size: 1.0em;
+            background-color: #139285;
+            color: white;
+            border: none;
+            border-radius: 25px; /* Rounded corners for a modern look */
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-transform: capitalize; 
+        }
+
         /* Filters Section */
         .filters {
             display: flex;
@@ -71,7 +84,7 @@
 
         .filters select {
             padding: 10px;
-            margin: 10px 10px;
+            margin: 10px;
             font-size: 1em;
             width: 180px;
             max-width: 100%;
@@ -169,6 +182,8 @@
 
     </style>
 </head>
+
+
 <body>
 
     <h1><p align=centre>Littletrails!<br>#searchforendorphins</h1></body></html>
@@ -176,7 +191,8 @@
 
     <!-- Search Bar Section -->
     <div class="search-bar">
-        <input type="text" id="searchInput" placeholder="Search for a trail..." oninput="searchTrails()">
+        <input type="text" id="searchInput" placeholder="Search for a trail...">
+        <button id="searchButton">Search</button>
     </div>
 
     <!-- Filters Section -->
@@ -532,6 +548,27 @@
     </div>
 
     <script>
+        // Function to handle the 'Enter' key press event or button click
+        function handleSearch() {
+            const searchTerm = document.getElementById('searchInput').value;
+            alert('Search term: ' + searchTerm);
+
+            // You can add further search logic here, like redirecting to a search results page
+            // window.location.href = 'https://example.com/search?q=' + encodeURIComponent(searchTerm);
+        }
+
+        // Attach event listener for the 'Enter' key
+        document.getElementById('searchInput').addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                handleSearch();  // Trigger the search when 'Enter' is pressed
+            }
+        });
+
+        // Attach event listener for the 'Search' button click
+        document.getElementById('searchButton').addEventListener('click', handleSearch);
+    </script>
+
+    <script>
         // Get filter and search input elements
         const distanceFilter = document.getElementById('distance');
         const terrainFilter = document.getElementById('terrain');
@@ -576,7 +613,7 @@
         distanceFilter.addEventListener('change', filterTrails);
         terrainFilter.addEventListener('change', filterTrails);
         shelterFilter.addEventListener('change', filterTrails);
-        searchInput.addEventListener('input', filterTrails);  // Use 'input' instead of 'change' for live search updates
+        searchInput.addEventListener('change', filterTrails);  // Use 'input' instead of 'change' for live search updates
     </script>
 
     <br><i>
